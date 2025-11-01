@@ -16,6 +16,11 @@ import (
 	"xfetch/sysinfo"
 )
 
+const (
+	version = "1.0.0"
+	author  = "Morten Johansen <mojoaar@atomicmail.io>"
+)
+
 // gapSize controls number of spaces between logo and info. Set by flag in main().
 var gapSize = 4
 
@@ -31,7 +36,23 @@ func main() {
 	gap := flag.Int("gap", 4, "number of spaces between logo and info")
 	noWAN := flag.Bool("no-wan", false, "disable public WAN IP lookup")
 	debug := flag.Bool("debug", false, "enable debug output (sets XFETCH_DEBUG)")
+	showVersion := flag.Bool("version", false, "show version information and exit")
+	showAuthor := flag.Bool("author", false, "show author information and exit")
 	flag.Parse()
+
+	// Handle --version flag
+	if *showVersion {
+		fmt.Printf("xfetch version %s\n", version)
+		os.Exit(0)
+	}
+
+	// Handle --author flag
+	if *showAuthor {
+		fmt.Printf("xfetch by %s\n", author)
+		fmt.Println("Source:      https://github.com/mojoaar/xfetch")
+		fmt.Println("Url:         https://johansen.foo")
+		os.Exit(0)
+	}
 
 	gapSize = *gap
 	if *debug {
