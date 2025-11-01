@@ -4,6 +4,8 @@
 
 xfetch is a small, fast, Windows-first system information fetcher written in Go. It prints a compact summary of the host (OS, build, uptime, CPU/GPU, memory/disk), the local and public IP addresses, and an ASCII-art logo to the terminal.
 
+![xfetch screenshot](xfetch.png)
+
 The project favors native Windows APIs where possible and uses a single combined PowerShell/CIM query to reduce process startup overhead when gathered information requires it.
 
 Key features
@@ -167,3 +169,22 @@ Contributions are welcome. A good first step is to open issues for small improve
 1. Fork the repository and create a feature branch.
 2. Run `go fmt ./...` and `go test ./...` before opening a PR.
 3. Keep Windows-specific code inside `//go:build windows` files.
+
+## History
+
+### v1.0.0 (November 1, 2025)
+
+**Initial stable release**
+
+- Windows-native system information fetcher with ANSI-colored output
+- Authoritative local IP detection using GetBestInterface API with UDP-dial and interface-name heuristics as fallbacks
+- WAN (public) IP lookup with short timeouts and offline gating
+- Combined PowerShell/CIM query for model, CPU, GPU, and BaseBoard (motherboard) information
+- Multi-source uptime calculation (CIM boot time, GetTickCount64, resume events) with source annotation
+- Native Windows APIs: RtlGetVersion for OS version detection, Toolhelp snapshots for parent process lookup, iphlpapi for network interface selection
+- Centralized PowerShell execution helper with timeouts to prevent hangs
+- Top-aligned ASCII art with configurable gap spacing and 16-color background bar
+- CLI flags: `--compact`, `--gap`, `--no-wan`, `--debug`
+- Comprehensive linter fixes (errcheck, staticcheck, revive, ineffassign)
+- MIT License and security/contributing documentation
+- GitHub Actions CI workflow for cross-platform testing
