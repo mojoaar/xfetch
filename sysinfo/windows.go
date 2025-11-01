@@ -158,7 +158,7 @@ func getSystemInfoWindows() (*SystemInfo, error) {
 						tickDur = time.Duration(ret) * time.Millisecond
 					}
 					chosen := uptime
-					source := "powerShell"
+					source := "PowerShell"
 					if tickDur > 0 && tickDur < chosen {
 						chosen = tickDur
 						source = "tick"
@@ -493,14 +493,12 @@ func getUptime() string {
 
 						// Default chosen is PS-derived uptime
 						chosen := uptime
-						source := "powerShell"
+						source := "PowerShell"
 
 						if tickDur > 0 && tickDur < chosen {
 							chosen = tickDur
 							source = "tick"
-						}
-
-						// Try to get the most recent resume time (Power-Troubleshooter Id=1)
+						} // Try to get the most recent resume time (Power-Troubleshooter Id=1)
 						psResumeCmd := "(Get-WinEvent -FilterHashtable @{LogName='System'; ProviderName='Microsoft-Windows-Power-Troubleshooter'; Id=1} -MaxEvents 1 | Select-Object -ExpandProperty TimeCreated).ToUniversalTime().ToString('o') | ConvertTo-Json -Compress"
 						if rout, rerr := runPowerShellJSON(psResumeCmd, 1500*time.Millisecond, nil); rerr == nil {
 							// rout contains a JSON string like "2025-11-01T07:54:00.0000000Z"
